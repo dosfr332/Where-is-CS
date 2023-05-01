@@ -1,0 +1,13 @@
+{
+  "name": "whereiscs",
+  "version": "1.0.0",
+  "description": "Take input from stdin and convert to GeoJSON format to be displayed on a map",
+  "main": "Main.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "ts": "tsc",
+    "start": "node out/Main.js"
+  },
+  "author": "Freddie Dossor",
+  "license": "ISC"
+}
