@@ -1,8 +1,9 @@
+export type direction = "N" | "E" | "W" | "S";
+
 export interface point{
     value: string,
-    direction: string
+    direction: direction
 }
-
 
 export class Coordinate{
     lat: point;
@@ -15,14 +16,7 @@ export class Coordinate{
         this.label = label;
     }
 
-    format(){
-
-    }
-
-    openMap(){
-        
-    }
-
+    
     toString(){
         let completeObject = {lat: this.lat, long: this.long, label: this.label}
         return JSON.stringify(completeObject, null, 4)

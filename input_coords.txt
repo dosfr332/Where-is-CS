@@ -1,0 +1,42 @@
+1 1
+2, 2
+3 3,
+,4 4
+5
+6 6 6
+7, 7, 7
+8         8 
+9 9  teststring
+Directional Format Testing:
+10n, 10
+11n 11
+12 12w
+13, 13w
+14s, 14n
+15n, 15s
+16w, 16w
+17e, 17w
+18N, 18n
+19N, 19s
+20N, 20E
+21N, 21e
+22n, 22e
+23S, 23W
+24S, 24w
+25s, 25e
+26s, 26e test label for the end
+DMS Format Testing:
+27d 27m 27s, 27d 27m 27s 
+28d 28' 28", 28d 28m 28'
+29 29 29, 29 29 29
+30 30 30 30 30 30 
+31d 31m 31s, 31 31 31 
+32d 32m 32s N, 32d 32m 32s W
+33d 33m 33s s, 33d 33m 33s e test
+DDM Fomat Testing:
+34 34, 34 34
+35d 35m, 35d 35m
+36d, 36m, 36d, 36m
+37d 37" N 37d 37" W
+More examples:
+1w, 1n

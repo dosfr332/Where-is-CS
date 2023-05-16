@@ -9,5 +9,12 @@
     "start": "node out/Main.js"
   },
   "author": "Freddie Dossor",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "child_process": "^1.0.2",
+    "got": "^12.6.0",
+    "live-server": "^1.2.2",
+    "typescript": "^5.0.4"
+  }
 }
