@@ -10,20 +10,20 @@ export interface FeatureCollection {
     features: Feature[];
 }
 
-export type type = "Point" | "LineString";
+export type type = "Point" | "LineString" | "Polygon";
 
 export interface Feature {
     type: "Feature";
     geometry: {
         type: type;
-        coordinates: number[] | number[][];
+        coordinates: number[] | number[][] | number[][][];
     };
     properties: {
         label: string;
     };
 }
 
-export function format(coordinates: Coordinate[], lines: Coordinate[][]): FeatureCollection {
+export function format(coordinates: Coordinate[], lines: Coordinate[][], polygons: Coordinate[][]): FeatureCollection {
     const features: Feature[] = coordinates.map((coordinate) => {
         const lat = parseFloat(coordinate.lat.value) * (coordinate.lat.direction === 'S' ? -1 : 1);
         const lng = parseFloat(coordinate.long.value) * (coordinate.long.direction === 'W' ? -1 : 1);
@@ -47,7 +47,13 @@ export function format(coordinates: Coordinate[], lines: Coordinate[][]): Featur
             return [lng, lat];
         });
 
-        let labelString: string = line[0].label + " " + line[1].label;
+        let labelString: string = ""
+        if(line[0].label){
+            labelString.concat(line[0].label + " ")
+        }
+        if(line[1].label){
+            labelString.concat(line[1].label);
+        }
 
         return {
             type: "Feature",
@@ -61,14 +67,39 @@ export function format(coordinates: Coordinate[], lines: Coordinate[][]): Featur
         };
     });
 
+    const polygonFeatures: Feature[] = polygons.map((polygon) => {
+        const polygonCoordinates = polygon.map((coordinate) => {
+            const lat = parseFloat(coordinate.lat.value) * (coordinate.lat.direction === 'S' ? -1 : 1);
+            const lng = parseFloat(coordinate.long.value) * (coordinate.long.direction === 'W' ? -1 : 1);
+            return [lng, lat];
+        });
 
-    const allFeatures = features.concat(lineFeatures);
+        let labelString: string = "";
+        for(let i: number = 0; i < polygon.length; i++){
+            labelString.concat(polygon[i].label + "")
+        }
+
+
+        return {
+            type: "Feature",
+            geometry: {
+                type: "Polygon",
+                coordinates: [polygonCoordinates],
+            },
+            properties: {
+                label: labelString,
+            },
+        };
+    });
+
+    const allFeatures = features.concat(lineFeatures, polygonFeatures);
 
     return {
         type: "FeatureCollection",
         features: allFeatures,
     };
 }
+
 
 
 export function openMap(geoJsonData: Object) {

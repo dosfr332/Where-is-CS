@@ -38,4 +38,6 @@ There are a number of commands that can be used to manipulate/display the coordi
   - no flag - This will remove the last two points and transform them into a line
   - -n flag - This will accept two new points as the start and end of the line. 
   - e.g `> line -n` or just `> line`
-
+- poly - Will create a polygon between any number of points (at least 3).
+  - no flag - This will remove all entered points and form them into a polygon.
+  - -n flag - This will accept any number of new points (at least 3) and can be closed using the `close` command.

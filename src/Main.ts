@@ -3,11 +3,14 @@ import { stdin as input, stdout as output } from 'node:process';
 import { validator } from "./validator";
 import { Coordinate } from './coordinate';
 import { format, openMap } from './geojson-utils';
+import { createEmitAndSemanticDiagnosticsBuilderProgram } from "typescript";
 
 
 let coordinateArray: Coordinate[] = [];
 
 let lines: Coordinate[][] = [];
+
+let polygons: Coordinate[][] = [];
 
 
 var rl = readline.createInterface({ input, output })
@@ -22,12 +25,12 @@ const readAndValidate = (line: string) => {
         return;
     }
     if (line === "map") {
-        if (coordinateArray.length === 0 && lines.length === 0) {
+        if (coordinateArray.length === 0 && lines.length === 0 && polygons.length === 0) {
             console.log("No coordinates to map");
             rl.prompt();
             return;
         }
-        openMap(format(coordinateArray, lines));
+        openMap(format(coordinateArray, lines, polygons));
         rl.prompt();
         return;
     }
@@ -41,6 +44,10 @@ const readAndValidate = (line: string) => {
             console.log(coordinate.toString());
         }
         rl.prompt();
+        return;
+    }
+    if (line === "poly" || line.includes("poly ")) {
+        createPolygon(line);
         return;
     }
     if (line === "clear") {
@@ -110,6 +117,52 @@ function createLine(line: string) {
             return;
         }else {
             console.log("Not enough points entered to create line");
+            rl.prompt();
+            return
+        }
+    }
+}
+
+function createPolygon(line: string) {
+    if(line.includes('-n')){
+        let polygonCoords: Coordinate[] = [];
+        rl.close()
+        rl = readline.createInterface({ input, output })
+        rl.on('line', (line) => {
+        
+            if(line === "close"){
+                if(polygonCoords.length < 3){
+                    console.log("Not enough points entered to create polygon");
+                    rl.prompt();
+                    return
+                }
+                polygons.push(polygonCoords);
+                resetInput("Polygon created");
+            } else {
+                const coordinateOne = validator(line)
+                if (!coordinateOne) {
+                    console.error("Not a valid coordinate")
+                    rl.prompt();
+                    return;
+                }
+                polygonCoords.push(coordinateOne);
+                rl.prompt();
+            }
+        })
+        console.log("Enter coordinates of polygon\nType close to stop the polygon.");
+        rl.prompt();
+    } else {
+        let coordArray: Coordinate[] = []
+        if(coordinateArray.length >= 3){
+            coordArray.push(coordinateArray.pop());
+            coordArray.push(coordinateArray.pop());
+            coordArray.push(coordinateArray.pop());
+            lines.push(coordArray);
+            console.log("Created polygon using all the points");
+            rl.prompt();
+            return;
+        }else {
+            console.log("Not enough points entered to create polygon");
             rl.prompt();
             return
         }
