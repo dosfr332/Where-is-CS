@@ -1,17 +1,17 @@
 import { Coordinate, point, direction } from "./coordinate";
 
 // Lat then Long
-const standardRegEx: RegExp = /^(?<Lat>-?(?:[0-9]|[1-8][0-9]|90)(?:\.\d{1,6})?)[,;\s]?\s+(?<Long>-?(?:[0-9]|[1-9][0-9]|1[0-7][0-9]|180)(?:\.\d{1,6})?)(?:\s(?<label>[a-zs A-Z\s]*))?$/;
-const dmsRegEx: RegExp = /^(?<dmsLat>-?(?:[0-9]|[1-8][0-9]|90))(?:([°d]\s?)|\s)(?<dmsLatMin>[0-5][0-9]|[0-9])(?:(['"m]\s?)|\s)(?<dmsLatSec>[0-5][0-9]|[0-9])(?:['"s])?\s?(?<dmsLatDir>[NS])?[,;\s]?\s+(?<dmsLong>-?(?:[0-9]|[1-9][0-9]|1[0-7][0-9]|180))(?:([°d]\s?)|\s)(?<dmsLongMin>[0-5][0-9]|[0-9])(?:(['"m]\s?)|\s)(?<dmsLongSec>[0-9]|[0-5][0-9])(?:['"s])?\s?(?<dmsLongDir>[EW])?(?:\s(?<label>[a-zs A-Z\s]*))?$/;
-const dmRegEx: RegExp = /^(?<ddmLat>-?(?:[0-9]|[1-8][0-9]|90))(?:[°d]\s?|\s)(?<ddmLatMin>[0-5]?[0-9](?:\.\d{1,6})?)(?:['"′m]?\s?)(?<ddmLatDir>[NS])?[,;\s]?\s+(?<ddmLong>-?(?:[0-9]|[1-9][0-9]|1[0-7][0-9]|180))(?:[°d]\s?|\s)(?<ddmLongMin>[0-5]?[0-9](?:\.\d{1,6})?)(?:['"′m]?\s?)(?<ddmLongDir>[EW])?(?:\s(?<label>[a-zs A-Z\s]*))?$/;
-const directionRegEx: RegExp = /^(?<dirLat>(?:[0-9]|[1-8][0-9]|90)(?:\.\d{1,6})?)['"]?\s*(?<dirLatDir>[NS])[,;\s]?\s+(?<dirLong>(?:[0-9]|[1-9][0-9]|1[0-7][0-9]|180)(?:\.\d{1,6})?)['"]?\s?(?<dirLongDir>[EW])(?:\s(?<label>[a-zs A-Z\s]*))?$/;
+const standardRegEx: RegExp = /^(?<Lat>-?(?:[0-9]|[1-8][0-9]|90)(?:\.\d{1,6})?)[,;\s]?\s+(?<Long>-?(?:[0-9]|[1-9][0-9]|1[0-7][0-9]|180)(?:\.\d{1,6})?)(?:\s(?<label>[a-zs A-Z\s\d]*))?$/;
+const dmsRegEx: RegExp = /^(?<dmsLat>-?(?:[0-9]|[1-8][0-9]|90))(?:(\s?[°d]\s?)|\s)(?<dmsLatMin>[0-5][0-9]|[0-9])(?:(\s?['′"`m]\s?)|\s)(?<dmsLatSec>[0-5][0-9]|[0-9])(?:\s?[″'"s])?\s?(?<dmsLatDir>[NS])?[,;\s]?\s+(?<dmsLong>-?(?:[0-9]|[1-9][0-9]|1[0-7][0-9]|180))(?:(\s?[°d]\s?)|\s)(?<dmsLongMin>[0-5][0-9]|[0-9])(?:(\s?['′`"m]\s?)|\s)(?<dmsLongSec>[1-5][0-9]|[0-9])(?:\s?['″"s])?\s?(?<dmsLongDir>[EW])?(?:\s(?<label>[a-zs A-Z\s\d]*))?$/;
+const dmRegEx: RegExp = /^(?<ddmLat>-?(?:[0-9]|[1-8][0-9]|90))(?:\s?[°d]\s?|\s)(?<ddmLatMin>[0-5]?[0-9](?:\.\d{1,6})?)(?:\s?['"′m]?\s?)(?<ddmLatDir>[NS])?[,;\s]?\s+(?<ddmLong>-?(?:[0-9]|[1-9][0-9]|1[0-7][0-9]|180))(?:\s?[°d]\s?|\s)(?<ddmLongMin>[0-5]?[0-9](?:\.\d{1,6})?)(?:\s?['"′m]?\s?)(?<ddmLongDir>[EW])?(?:\s(?<label>[a-zs A-Z\s\d]*))?$/;
+const directionRegEx: RegExp = /^(?<dirLat>(?:[0-9]|[1-8][0-9]|90)(?:\.\d{1,6})?)['"]?\s*(?<dirLatDir>[NS])[,;\s]?\s+(?<dirLong>(?:[0-9]|[1-9][0-9]|1[0-7][0-9]|180)(?:\.\d{1,6})?)['"]?\s?(?<dirLongDir>[EW])(?:\s(?<label>[a-zs A-Z\s\d]*))?$/;
 
 //Long then Lat
 //TODO: Reverse regex and add if conditions
-const standardRegExReverse: RegExp = /^(?<Long>-?(?:[0-9]|[1-9][0-9]|1[0-7][0-9]|180)(?:\.\d{1,6})?)[,;]?\s+(?<Lat>-?(?:[0-9]|[1-8][0-9]|90)(?:\.\d{1,6})?)(?:\s(?<label>[a-zs A-Z\s]*))?$/;
-const dmsRegExReverse: RegExp = /^(?<dmsLong>-?(?:[0-9]|[1-9][0-9]|1[0-7][0-9]|180))(?:([°d]\s?)|\s)(?<dmsLongMin>[0-5][0-9]|[0-9])(?:(['"m]\s?)|\s)(?<dmsLongSec>[0-9]|[0-5][0-9])(?:['"s])?\s?(?<dmsLongDir>[EW])?[,]?\s+(?<dmsLat>-?(?:[0-9]|[1-8][0-9]|90))(?:([°d]\s?)|\s)(?<dmsLatMin>[0-5][0-9]|[0-9])(?:(['"m]\s?)|\s)(?<dmsLatSec>[0-5][0-9]|[0-9])(?:['"s])?\s?(?<dmsLatDir>[NS])?(?:\s(?<label>[a-zs A-Z\s]*))?$/;
-const dmRegExReverse: RegExp = /^(?<ddmLong>-?(?:[0-9]|[1-9][0-9]|1[0-7][0-9]|180))(?:[°d]\s?|\s)(?<ddmLongMin>[0-5]?[0-9](?:\.\d{1,6})?)(?:['"′m]?\s?)(?<ddmLongDir>[EW])?[,;]?\s+(?<ddmLat>-?(?:[0-9]|[1-8][0-9]|90))(?:[°d]\s?|\s)(?<ddmLatMin>[0-5]?[0-9](?:\.\d{1,6})?)(?:['"′m]?\s?)(?<ddmLatDir>[NS])?(?:\s(?<label>[a-zs A-Z\s]*))?$/;
-const directionRegExReverse: RegExp = /^(?<dirLong>(?:[0-9]|[1-9][0-9]|1[0-7][0-9]|180)(?:\.\d{1,6})?)['"]?\s?(?<dirLongDir>[EW])[,;]?\s+(?<dirLat>(?:[0-9]|[1-8][0-9]|90)(?:\.\d{1,6})?)['"]?\s*(?<dirLatDir>[NS])(?:\s(?<label>[a-zs A-Z\s]*))?$/;
+const standardRegExReverse: RegExp = /^(?<Long>-?(?:[0-9]|[1-9][0-9]|1[0-7][0-9]|180)(?:\.\d{1,6})?)[,;]?\s+(?<Lat>-?(?:[0-9]|[1-8][0-9]|90)(?:\.\d{1,6})?)(?:\s(?<label>[a-zs A-Z\s\d]*))?$/;
+const dmsRegExReverse: RegExp = /^(?<dmsLong>-?(?:[0-9]|[1-9][0-9]|1[0-7][0-9]|180))(?:(\s?[°d]\s?)|\s)(?<dmsLongMin>[0-5][0-9]|[0-9])(?:(\s?['`"m]\s?)|\s)(?<dmsLongSec>[0-9]|[0-5][0-9])(?:\s?['″"s])?\s?(?<dmsLongDir>[EW])?[,]?\s+(?<dmsLat>-?(?:[0-9]|[1-8][0-9]|90))(?:(\s?[°d]\s?)|\s)(?<dmsLatMin>[0-5][0-9]|[0-9])(?:(\s?['`"m]\s?)|\s)(?<dmsLatSec>[1-5][0-9]|[0-9])(?:\s?['″"s])?\s?(?<dmsLatDir>[NS])?(?:\s(?<label>[a-zs A-Z\s\d]*))?$/;
+const dmRegExReverse: RegExp = /^(?<ddmLong>-?(?:[0-9]|[1-9][0-9]|1[0-7][0-9]|180))(?:\s?[°d]\s?|\s)(?<ddmLongMin>[0-5]?[0-9](?:\.\d{1,6})?)(?:\s?['"′m]?\s?)(?<ddmLongDir>[EW])?[,;]?\s+(?<ddmLat>-?(?:[0-9]|[1-8][0-9]|90))(?:\s?[°d]\s?|\s)(?<ddmLatMin>[0-5]?[0-9](?:\.\d{1,6})?)(?:\s?['"′m]?\s?)(?<ddmLatDir>[NS])?(?:\s(?<label>[a-zs A-Z\s\d]*))?$/;
+const directionRegExReverse: RegExp = /^(?<dirLong>(?:[0-9]|[1-9][0-9]|1[0-7][0-9]|180)(?:\.\d{1,6})?)['"]?\s?(?<dirLongDir>[EW])[,;]?\s+(?<dirLat>(?:[0-9]|[1-8][0-9]|90)(?:\.\d{1,6})?)['"]?\s*(?<dirLatDir>[NS])(?:\s(?<label>[a-zs A-Z\s\d]*))?$/;
 
 export function validator(input: string): Coordinate {
     if (standardRegEx.test(input)) {
