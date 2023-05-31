@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "ts": "tsc",
+    "run" : "npm run ts\nnpm run start",
     "start": "node out/Main.js"
   },
   "author": "Freddie Dossor",

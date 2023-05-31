@@ -15,12 +15,14 @@ Directional Format Testing:
 14s, 14n
 15n, 15s
 16w, 16w
+poly -n
 17e, 17w
 18N, 18n
 19N, 19s
 20N, 20E
 21N, 21e
 22n, 22e
+close
 23S, 23W
 24S, 24w
 25s, 25e
@@ -40,3 +42,4 @@ DDM Fomat Testing:
 37d 37" N 37d 37" W
 More examples:
 1w, 1n
+map

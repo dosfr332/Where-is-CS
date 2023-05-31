@@ -18,7 +18,7 @@ export class Coordinate{
 
     
     toString(){
-        let completeObject = {lat: this.lat, long: this.long, label: this.label}
-        return JSON.stringify(completeObject, null, 4)
+        let completeObject: string = `lat: ${this.lat.value}, long: ${this.long.value}${(this.label) ? ", label: " + this.label : ""}`;
+        return completeObject;
     }
 }
